@@ -1,4 +1,4 @@
-const { createProduct, showAllProducts } = require('../services/productsService');
+const { createProduct, showAllProducts, showProductById } = require('../services/productsService');
 const { created } = require('../utils/dictionary/statusCode');
 const { unprocessableEntity, success } = require('../utils/dictionary/statusCode');
 
@@ -12,12 +12,30 @@ const productCreate = async (req, res, _next) => {
   }
 };
 
-const getAllProducts = async (req, res, _next) => {
-  const allProducts = await showAllProducts();
-  return res.status(success).json({ products: allProducts });
+const getAllProducts = async (req, res, next) => {
+  try {
+    const allProducts = await showAllProducts();
+    return res.status(success).json({ products: allProducts });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getProduct = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    console.log('controller id: ', id);
+    const product = await showProductById(id);
+
+    return res.status(success).json(product);
+  } catch (error) {
+    console.log('erro')
+    return res.status(unprocessableEntity).json(error);
+  }
 };
 
 module.exports = {
   productCreate,
   getAllProducts,
+  getProduct,
 };
