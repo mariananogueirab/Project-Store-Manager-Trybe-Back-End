@@ -49,7 +49,7 @@ const productUpdate = async (req, res, _next) => {
   }
 };
 
-const productDelete = async (req, res, next) => {
+const productDelete = async (req, res, _next) => {
   try {
     const { id } = req.params;
     const product = await deleteProduct(id);

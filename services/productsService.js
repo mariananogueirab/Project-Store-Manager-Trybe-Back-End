@@ -29,7 +29,7 @@ const validateId = (id) => {
   const { error } = idSchema.validate({
     id,
   });
-  if (error) throw invalidDataError(error.message, invalidData);
+  if (error) throw invalidDataError(wrongId, invalidData);
 };
 
 const createProduct = async (name, quantity) => {
