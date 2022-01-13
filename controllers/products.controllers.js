@@ -2,6 +2,7 @@ const { createProduct,
   showAllProducts,
   showProductById,
   updateProduct,
+  deleteProduct,
 } = require('../services/productsService');
 const { created } = require('../utils/dictionary/statusCode');
 const { unprocessableEntity, success } = require('../utils/dictionary/statusCode');
@@ -48,9 +49,21 @@ const productUpdate = async (req, res, _next) => {
   }
 };
 
+const productDelete = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const product = await deleteProduct(id);
+
+    return res.status(success).json(product);
+  } catch (error) {
+    return res.status(unprocessableEntity).json(error);
+  }
+};
+
 module.exports = {
   productCreate,
   getAllProducts,
   getProduct,
   productUpdate,
+  productDelete,
 };

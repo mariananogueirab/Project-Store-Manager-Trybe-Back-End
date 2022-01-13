@@ -4,6 +4,7 @@ const { create,
   findAllProducts,
   findProductById,
   updateProductById,
+  deleteProductById,
 } = require('../models/productsModel');
 const { invalidData, productExists, wrongId } = require('../utils/dictionary/messagesDefault');
 const { invalidDataError } = require('../utils/functions/errorHandling');
@@ -58,7 +59,14 @@ const showProductById = async (id) => {
 
 const updateProduct = async (id, name, quantity) => {
   validateProduct(name, quantity);
+  validateId(id);
   const product = await updateProductById(id, name, quantity);
+  return product;
+};
+
+const deleteProduct = async (id) => {
+  const product = await deleteProductById(id);
+  if (!product) throw invalidDataError(wrongId, invalidData);
   return product;
 };
 
@@ -67,4 +75,5 @@ module.exports = {
   showAllProducts,
   showProductById,
   updateProduct,
+  deleteProduct,
 };
