@@ -65,6 +65,7 @@ const updateProduct = async (id, name, quantity) => {
 };
 
 const deleteProduct = async (id) => {
+  validateId(id);
   const product = await deleteProductById(id);
   if (!product) throw invalidDataError(wrongId, invalidData);
   return product;
