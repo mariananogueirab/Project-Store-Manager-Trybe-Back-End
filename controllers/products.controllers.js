@@ -4,8 +4,7 @@ const { createProduct,
   updateProduct,
   deleteProduct,
 } = require('../services/productsService');
-const { created } = require('../utils/dictionary/statusCode');
-const { unprocessableEntity, success } = require('../utils/dictionary/statusCode');
+const { unprocessableEntity, success, created } = require('../utils/dictionary/statusCode');
 
 const productCreate = async (req, res, _next) => {
   try {

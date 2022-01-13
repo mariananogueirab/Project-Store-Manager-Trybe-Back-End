@@ -1,5 +1,6 @@
 const express = require('express');
 const products = require('./routes/products');
+const sales = require('./routes/sales');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -13,6 +14,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', products);
+app.use('/sales', sales);
 app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Teste, escutando na porta ${PORT}`));
