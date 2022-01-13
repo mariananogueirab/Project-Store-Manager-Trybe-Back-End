@@ -1,5 +1,10 @@
 const Joi = require('@hapi/joi');
-const { create, findByName, findAllProducts, findProductById } = require('../models/productsModel');
+const { create,
+  findByName,
+  findAllProducts,
+  findProductById,
+  updateProductById,
+} = require('../models/productsModel');
 const { invalidData, productExists, wrongId } = require('../utils/dictionary/messagesDefault');
 const { invalidDataError } = require('../utils/functions/errorHandling');
 
@@ -8,19 +13,34 @@ const productSchema = Joi.object({
   quantity: Joi.number().integer().min(1).required(),
 });
 
-/* const idSchema = Joi.object({
+const idSchema = Joi.object({
   id: Joi.string().length(24).required(),
-}); */
+});
 
-const createProduct = async (name, quantity) => {
+const validateProduct = (name, quantity) => {
   const { error } = productSchema.validate({
     name, quantity,
   });
+  if (error) throw invalidDataError(error.message, invalidData);
+};
+
+const validateId = (id) => {
+  const { error } = idSchema.validate({
+    id,
+  });
+  if (error) throw invalidDataError(error.message, invalidData);
+};
+
+const createProduct = async (name, quantity) => {
+ /*  const { error } = productSchema.validate({
+    name, quantity,
+  }); */
+  validateProduct(name, quantity);
 
   const nameExists = await findByName(name);
 
   if (nameExists) throw invalidDataError(productExists, invalidData);
-  if (error) throw invalidDataError(error.message, invalidData);
+  /* if (error) throw invalidDataError(error.message, invalidData); */
 
   const id = await create(name, quantity);
 
@@ -33,10 +53,9 @@ const showAllProducts = async () => {
 };
 
 const showProductById = async (id) => {
+  validateId(id);
   const product = await findProductById(id);
-  /* const isIdValid = idSchema.validate({
-    id,
-  }); */
+  
   if (!product) throw invalidDataError(wrongId, invalidData);
   return product;
 };
