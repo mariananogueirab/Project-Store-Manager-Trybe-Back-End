@@ -32,15 +32,11 @@ const validateId = (id) => {
 };
 
 const createProduct = async (name, quantity) => {
- /*  const { error } = productSchema.validate({
-    name, quantity,
-  }); */
   validateProduct(name, quantity);
 
   const nameExists = await findByName(name);
 
   if (nameExists) throw invalidDataError(productExists, invalidData);
-  /* if (error) throw invalidDataError(error.message, invalidData); */
 
   const id = await create(name, quantity);
 
@@ -60,8 +56,15 @@ const showProductById = async (id) => {
   return product;
 };
 
+const updateProduct = async (id, name, quantity) => {
+  validateProduct(name, quantity);
+  const product = await updateProductById(id, name, quantity);
+  return product;
+};
+
 module.exports = {
   createProduct,
   showAllProducts,
   showProductById,
+  updateProduct,
 };

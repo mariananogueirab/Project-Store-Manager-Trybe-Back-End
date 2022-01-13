@@ -1,4 +1,8 @@
-const { createProduct, showAllProducts, showProductById } = require('../services/productsService');
+const { createProduct,
+  showAllProducts,
+  showProductById,
+  updateProduct,
+} = require('../services/productsService');
 const { created } = require('../utils/dictionary/statusCode');
 const { unprocessableEntity, success } = require('../utils/dictionary/statusCode');
 
@@ -32,8 +36,21 @@ const getProduct = async (req, res, _next) => {
   }
 };
 
+const productUpdate = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const product = await updateProduct(id, name, quantity);
+
+    return res.status(success).json(product);
+  } catch (error) {
+    return res.status(unprocessableEntity).json(error);
+  }
+};
+
 module.exports = {
   productCreate,
   getAllProducts,
   getProduct,
+  productUpdate,
 };
