@@ -5,8 +5,12 @@ const { invalidDataError } = require('../utils/functions/errorHandling');
 
 const productSchema = Joi.object({
   name: Joi.string().min(5).required(),
-  quantity: Joi.number().integer().min(1),
+  quantity: Joi.number().integer().min(1).required(),
 });
+
+/* const idSchema = Joi.object({
+  id: Joi.string().length(24).required(),
+}); */
 
 const createProduct = async (name, quantity) => {
   const { error } = productSchema.validate({
@@ -30,7 +34,9 @@ const showAllProducts = async () => {
 
 const showProductById = async (id) => {
   const product = await findProductById(id);
-  console.log('service: ', product);
+  /* const isIdValid = idSchema.validate({
+    id,
+  }); */
   if (!product) throw invalidDataError(wrongId, invalidData);
   return product;
 };

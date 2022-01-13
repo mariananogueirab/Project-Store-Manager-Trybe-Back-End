@@ -24,12 +24,10 @@ const getAllProducts = async (req, res, next) => {
 const getProduct = async (req, res, _next) => {
   try {
     const { id } = req.params;
-    console.log('controller id: ', id);
     const product = await showProductById(id);
 
     return res.status(success).json(product);
   } catch (error) {
-    console.log('erro')
     return res.status(unprocessableEntity).json(error);
   }
 };
