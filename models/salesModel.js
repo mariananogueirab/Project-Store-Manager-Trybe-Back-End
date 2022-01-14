@@ -18,7 +18,20 @@ const findSaleById = async (id) => {
   return sale;
 };
 
+const findAllSales = async () => {
+  const conn = await connect();
+  const sales = await conn.collection(DB_COLLECTION).find().toArray();
+  return sales;
+};
+
+/* const updateSaleById = async (saleId, productId, quantity) => {
+
+}; */
+
+
+
 module.exports = {
   registerSale,
   findSaleById,
+  findAllSales,
 };

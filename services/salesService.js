@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { registerSale, findSaleById } = require('../models/salesModel');
+const { registerSale, findSaleById, findAllSales } = require('../models/salesModel');
 const { findProductById } = require('../models/productsModel');
 const { invalidSale,
   invalidData,
@@ -46,7 +46,13 @@ const showSaleById = async (id) => {
   return sale;
 };
 
+const showAllSales = async () => {
+  const allSales = await findAllSales();
+  return allSales;
+};
+
 module.exports = {
   salesRegister,
   showSaleById,
+  showAllSales,
 };
