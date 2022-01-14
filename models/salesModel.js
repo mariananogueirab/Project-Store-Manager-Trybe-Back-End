@@ -4,10 +4,8 @@ const connect = require('./connection');
 const DB_COLLECTION = 'sales';
 
 const registerSale = async (sales) => {
-  console.log('model sales:', sales)
   const conn = await connect();
-  const { insertedId } = await conn.collection(DB_COLLECTION).insertMany(sales);
-  console.log('model id: ', insertedId);
+  const { insertedId } = await conn.collection(DB_COLLECTION).insertOne({ sales });
   return insertedId;
 };
 

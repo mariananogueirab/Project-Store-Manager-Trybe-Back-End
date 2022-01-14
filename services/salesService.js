@@ -1,9 +1,13 @@
 const Joi = require('@hapi/joi');
-const { registerSale, findSaleById, findAllSales, deleteSaleById } = require('../models/salesModel');
+const {
+  registerSale,
+  findSaleById,
+  findAllSales,
+  deleteSaleById,
+} = require('../models/salesModel');
 const { findProductById } = require('../models/productsModel');
 const { invalidSale,
   invalidData,
-  wrongId,
   saleNotFound,
   notFound,
   wrongSaleId,
@@ -19,23 +23,26 @@ const validateProductId = async (id) => {
   const idExists = await findProductById(id);
 
   if (!idExists) throw invalidDataError(invalidSale, invalidData);
-
-  return idExists;
 };
 
-const validateSale = async (productId, quantity) => {
+const validateSale = (productId, quantity) => {
   const { error } = saleSchema.validate({
     productId,
     quantity,
   });
-  if (error) throw invalidDataError(wrongId, invalidData);
+  if (error) throw invalidDataError(invalidSale, invalidData);
 };
 
+const validateAllSales = async (lista) => Promise.all(
+  lista.map(async (item) => {
+    await validateProductId(item.productId);
+    validateSale(item.productId, item.quantity);
+  }),
+  );
+
 const salesRegister = async (body) => {
-  body.forEach(async ({ productId, quantity }) => {
-    await validateProductId(productId);
-    await validateSale(productId, quantity);
-  });
+  await validateAllSales(body);
+  
   const id = await registerSale(body);
   console.log('service body: ', body);
   return { _id: id, itensSold: body };
