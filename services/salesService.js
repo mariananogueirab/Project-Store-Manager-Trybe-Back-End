@@ -1,11 +1,12 @@
 const Joi = require('@hapi/joi');
-const { registerSale, findSaleById, findAllSales } = require('../models/salesModel');
+const { registerSale, findSaleById, findAllSales, deleteSaleById } = require('../models/salesModel');
 const { findProductById } = require('../models/productsModel');
 const { invalidSale,
   invalidData,
   wrongId,
   saleNotFound,
   notFound,
+  wrongSaleId,
 } = require('../utils/dictionary/messagesDefault');
 const { invalidDataError } = require('../utils/functions/errorHandling');
 
@@ -14,7 +15,7 @@ const saleSchema = Joi.object({
   quantity: Joi.number().integer().min(1).required(),
 });
 
-const validateSaleId = async (id) => {
+const validateProductId = async (id) => {
   const idExists = await findProductById(id);
 
   if (!idExists) throw invalidDataError(invalidSale, invalidData);
@@ -32,7 +33,7 @@ const validateSale = async (productId, quantity) => {
 
 const salesRegister = async (body) => {
   body.forEach(async ({ productId, quantity }) => {
-    await validateSaleId(productId);
+    await validateProductId(productId);
     await validateSale(productId, quantity);
   });
   const id = await registerSale(body);
@@ -51,8 +52,15 @@ const showAllSales = async () => {
   return allSales;
 };
 
+const deleteSale = async (id) => {
+  const sale = await deleteSaleById(id);
+  if (!sale) throw invalidDataError(wrongSaleId, invalidData);
+  return sale;
+};
+
 module.exports = {
   salesRegister,
   showSaleById,
   showAllSales,
+  deleteSale,
 };

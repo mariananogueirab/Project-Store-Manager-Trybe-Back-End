@@ -1,4 +1,4 @@
-const { salesRegister, showSaleById, showAllSales } = require('../services/salesService');
+const { salesRegister, showSaleById, showAllSales, deleteSale } = require('../services/salesService');
 const { unprocessableEntity, success, notFound } = require('../utils/dictionary/statusCode');
 
 const register = async (req, res, _next) => {
@@ -33,8 +33,20 @@ const getAllSales = async (req, res, next) => {
   }
 };
 
+const saleDelete = async (req, res, _next) => {
+  try {
+    const { id } = req.params;
+    const sale = await deleteSale(id);
+
+    return res.status(success).json(sale);
+  } catch (error) {
+    return res.status(unprocessableEntity).json(error);
+  }
+};
+
 module.exports = {
   register,
   getSaleById,
   getAllSales,
+  saleDelete,
 };

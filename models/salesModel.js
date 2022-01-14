@@ -28,10 +28,17 @@ const findAllSales = async () => {
 
 }; */
 
-
+const deleteSaleById = async (id) => {
+  const conn = await connect();
+  const sale = await findSaleById(id);
+  await conn.collection(DB_COLLECTION)
+    .remove({ _id: ObjectId(id) }, {});
+  return sale;
+};
 
 module.exports = {
   registerSale,
   findSaleById,
   findAllSales,
+  deleteSaleById,
 };
