@@ -24,7 +24,7 @@ const findAllProducts = async () => {
 const findProductById = async (id) => {
   const conn = await connect();
   const product = await conn.collection(DB_COLLECTION)
-    .findOne({ _id: ObjectId(id) }, {});
+    .findOne({ _id: ObjectId(id) });
   return product;
 };
 

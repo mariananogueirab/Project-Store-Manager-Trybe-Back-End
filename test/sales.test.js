@@ -6,7 +6,7 @@ const mongoDbUrl = `mongodb://${process.env.HOST || 'mongodb'}:27017/StoreManage
 const url = 'http://localhost:3000';
 const invalidId = 99999;
 
-describe('5 - Crie um endpoint para cadastrar vendas', () => {
+describe.only('5 - Crie um endpoint para cadastrar vendas', () => {
   let connection;
   let db;
 
