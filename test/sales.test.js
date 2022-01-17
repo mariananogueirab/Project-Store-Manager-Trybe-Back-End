@@ -346,7 +346,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
   });
 });
 
-describe.only('7 - Crie um endpoint para atualizar uma venda', () => {
+describe('7 - Crie um endpoint para atualizar uma venda', () => {
   let connection;
   let db;
 

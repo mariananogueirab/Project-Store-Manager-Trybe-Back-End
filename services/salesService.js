@@ -25,11 +25,11 @@ const saleIdSchema = Joi.object({
   saleId: Joi.string().length(24).required(),
 });
 
-const validateSaleId = (saleId) => {
+const validateSaleId = (saleId, code, message) => {
   const { error } = saleIdSchema.validate({
     saleId,
   });
-  if (error) throw invalidDataError(saleNotFound, notFound); 
+  if (error) throw invalidDataError(message, code); 
 };
 
 const validateProductId = async (id) => {
@@ -61,15 +61,13 @@ const validateAllSales = async (lista) => Promise.all(
 
 const salesRegister = async (body) => {
   await validateAllSales(body);
-  console.log('register service body: ', body);
   
   const id = await registerSale(body);
-  console.log('service body: ', body);
   return { _id: id, itensSold: body };
 };
 
 const showSaleById = async (id) => {
-  validateSaleId(id);
+  validateSaleId(id, notFound, saleNotFound);
   const sale = await findSaleById(id);
   if (!sale) throw invalidDataError(saleNotFound, notFound);
   return sale;
@@ -81,6 +79,7 @@ const showAllSales = async () => {
 };
 
 const deleteSale = async (id) => {
+  validateSaleId(id, invalidData, wrongSaleId);
   const sale = await deleteSaleById(id);
   if (!sale) throw invalidDataError(wrongSaleId, invalidData);
   return sale;

@@ -23,7 +23,6 @@ const getSaleById = async (req, res, _next) => {
     const sale = await showSaleById(id);
     return res.status(success).json(sale);
   } catch (error) {
-    console.log('error by id: ', error);
     return res.status(notFound).json(error);
   }
 };
