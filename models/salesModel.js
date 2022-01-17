@@ -5,7 +5,7 @@ const DB_COLLECTION = 'sales';
 
 const registerSale = async (sales) => {
   const conn = await connect();
-  const { insertedId } = await conn.collection(DB_COLLECTION).insertOne({ sales });
+  const { insertedId } = await conn.collection(DB_COLLECTION).insertOne({ itensSold: sales });
   return insertedId;
 };
 
@@ -19,12 +19,17 @@ const findSaleById = async (id) => {
 const findAllSales = async () => {
   const conn = await connect();
   const sales = await conn.collection(DB_COLLECTION).find().toArray();
+  console.log('sales model: ', sales);
   return sales;
 };
 
-/* const updateSaleById = async (saleId, productId, quantity) => {
-
-}; */
+const updateSaleById = async (saleId, itensSold) => {
+  const conn = await connect();
+  await conn.collection(DB_COLLECTION)
+    .updateOne({ _id: ObjectId(saleId) }, { $set: { itensSold } });
+    const sale = await findSaleById(saleId);
+  return sale;
+};
 
 const deleteSaleById = async (id) => {
   const conn = await connect();
@@ -39,4 +44,5 @@ module.exports = {
   findSaleById,
   findAllSales,
   deleteSaleById,
+  updateSaleById,
 };

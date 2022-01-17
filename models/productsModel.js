@@ -44,6 +44,16 @@ const deleteProductById = async (id) => {
   return product;
 };
 
+/* const updateProductQuantity = async (id, quantity) => {
+  const conn = await connect();
+  const product = await findProductById(id);
+  const actualQuantity = product.quantity - quantity;
+  await conn.collection(DB_COLLECTION)
+    .updateOne({ _id: ObjectId(id) }, { $set: { quantity: actualQuantity } });
+  const productUpdated = await findProductById(id);
+  return productUpdated;
+}; */
+
 module.exports = {
  create,
  findByName,
@@ -51,4 +61,5 @@ module.exports = {
  findProductById,
  updateProductById,
  deleteProductById,
+/*  updateProductQuantity, */
 };
