@@ -43,7 +43,7 @@ const validateSale = (productId, quantity) => {
     productId,
     quantity,
   });
-  if (error) throw invalidDataError(invalidSale, invalidData); // tirar o throw
+  if (error) throw invalidDataError(invalidSale, invalidData);
 };
 
 const validateAllSales = async (lista) => Promise.all(
@@ -72,7 +72,7 @@ const showSaleById = async (id) => {
   validateSaleId(id);
   const sale = await findSaleById(id);
   if (!sale) throw invalidDataError(saleNotFound, notFound);
-  return sale; // criar função para validar id
+  return sale;
 };
 
 const showAllSales = async () => {

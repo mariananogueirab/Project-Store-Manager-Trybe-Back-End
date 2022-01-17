@@ -54,7 +54,7 @@ const saleUpdate = async (req, res, _next) => {
     const itensSold = req.body;
     const sale = await updateSale(id, itensSold);
 
-    return res.status(success).jason(sale);
+    return res.status(success).json(sale);
   } catch (error) {
     return res.status(unprocessableEntity).json(error);
   }
